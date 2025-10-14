@@ -1,0 +1,16 @@
+# Fichier requirements.txt
+# Pour Apache Airflow et le provider PostgreSQL
+apache-airflow-providers-postgres
+
+# Pour appeler l'API
+requests
+
+# Pour se connecter à PostgreSQL depuis Python
+psycopg2-binary
+
+# Pour l'analyse de sentiment
+textblob
+
+# Pour que le BashOperator puisse trouver et lancer dbt
+dbt-core
+dbt-postgres

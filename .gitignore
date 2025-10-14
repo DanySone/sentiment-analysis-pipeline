@@ -1,0 +1,21 @@
+# Environnements virtuels Python
+.venv
+venv/
+
+# Fichiers Python compilés et caches
+__pycache__/
+*.pyc
+
+# Fichiers générés par dbt (très important !)
+dbt_project/dbt_packages/
+dbt_project/target/
+dbt_project/logs/
+
+# Fichiers de configuration Astro/Airflow
+.astro/
+
+# Fichiers de configuration de l'éditeur
+.vscode/
+
+# Fichiers système
+.DS_Store

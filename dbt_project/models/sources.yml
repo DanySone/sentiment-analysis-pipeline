@@ -1,0 +1,10 @@
+# Fichier : dbt_project/models/sources.yml
+
+version: 2
+
+sources:
+  - name: raw_data # Un nom que vous choisissez pour le groupe de sources
+    database: postgres # Le nom de la base de données (défaut Astro)
+    schema: public     # Le schéma où la table a été créée
+    tables:
+      - name: raw_articles # Le nom exact de la table créée par Airflow

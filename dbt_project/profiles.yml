@@ -1,0 +1,12 @@
+dbt_project: # Le nom de votre projet dans dbt_project.yml
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: postgres
+      user: postgres # <-- Changement
+      password: postgres # <-- Changement
+      port: 5432
+      dbname: postgres # <-- Changement
+      schema: public # <-- Changement
+      threads: 1
