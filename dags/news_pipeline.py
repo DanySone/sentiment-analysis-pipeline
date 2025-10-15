@@ -21,8 +21,11 @@ from textblob import TextBlob
 # =============================================================================
 
 
+# Fichier news_pipeline.py
+
+
 def fetch_and_load_articles():
-    """Récupère les articles de NewsAPI et les charge dans la table "raw_articles"."""
+    """Récupère les articles et les charge dans la table "raw_articles" EXISTANTE."""
     api_key = Variable.get("NEWS_API_KEY")
     url = f"https://newsapi.org/v2/everything?q=technology&language=en&sortBy=publishedAt&pageSize=100&apiKey={api_key}"
 
@@ -38,15 +41,7 @@ def fetch_and_load_articles():
     hook = PostgresHook(postgres_conn_id="postgres_default")
     with hook.get_conn() as conn:
         with conn.cursor() as cur:
-            cur.execute(
-                """
-                CREATE TABLE IF NOT EXISTS public.raw_articles (
-                    id SERIAL PRIMARY KEY, source_name VARCHAR(255), author VARCHAR(255),
-                    title TEXT, description TEXT, url TEXT, published_at TIMESTAMP,
-                    content TEXT, inserted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                );
-            """
-            )
+            # ON A SUPPRIMÉ LE "CREATE TABLE" D'ICI
 
             for article in articles:
                 author = article.get("author")
@@ -117,12 +112,16 @@ with DAG(
     fetch_articles_task = PythonOperator(
         task_id="fetch_and_load_articles", python_callable=fetch_and_load_articles
     )
-    run_dbt_staging_task = BashOperator(
-        task_id="run_dbt_staging_models",
-        bash_command="cd /usr/local/airflow/dbt_project && dbt run --select staging --profiles-dir .",
+
+    # COMBINER les commandes dbt en une seule tâche
+    run_dbt_task = BashOperator(
+        task_id="run_dbt_models",
+        bash_command="cd /usr/local/airflow/dbt_project && dbt clean && dbt deps && dbt run --select staging --profiles-dir .",
     )
+
     analyze_sentiment_task = PythonOperator(
         task_id="analyze_sentiment", python_callable=analyze_sentiment
     )
 
-    fetch_articles_task >> run_dbt_staging_task >> analyze_sentiment_task
+    # Mettez à jour la chaîne de dépendances
+    fetch_articles_task >> run_dbt_task >> analyze_sentiment_task

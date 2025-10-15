@@ -1,4 +1,5 @@
-# Fichier requirements.txt
+# Fichier requirements.txt (CORRIGÉ)
+
 # Pour Apache Airflow et le provider PostgreSQL
 apache-airflow-providers-postgres
 
@@ -11,6 +12,6 @@ psycopg2-binary
 # Pour l'analyse de sentiment
 textblob
 
-# Pour que le BashOperator puisse trouver et lancer dbt
-dbt-core
-dbt-postgres
+# BONNE PRATIQUE : Installe dbt-postgres ET la bonne version de dbt-core.
+# Supprimez les lignes pour "dbt-core" et "dbt-postgres" et remplacez-les par celle-ci.
+dbt-postgres==1.8.2
