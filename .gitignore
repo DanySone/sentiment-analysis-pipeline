@@ -19,3 +19,6 @@ dbt_project/logs/
 
 # Fichiers système
 .DS_Store
+
+# Fichiers d'environnement
+.env

@@ -1,0 +1,4 @@
+services:
+  scheduler:
+    volumes:
+      - ./dbt_project/target:/usr/local/airflow/dbt_project/target
