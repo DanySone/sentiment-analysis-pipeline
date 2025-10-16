@@ -2,3 +2,29 @@ services:
   scheduler:
     volumes:
       - ./dbt_project/target:/usr/local/airflow/dbt_project/target
+
+  dashboard:
+    # On dit à Docker d'utiliser l'image que vous avez déjà construite
+    image: sentiment-analysis_950bd4-dashboard:latest
+    ports:
+      - "8501:8501"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+    # --- LA CORRECTION, PARTIE 1 ---
+    # On dit explicitement au service de rejoindre un réseau que nous allons définir
+    networks:
+      - airflow_network
+
+# --- LA CORRECTION, PARTIE 2 ---
+# On déclare que ce réseau est "externe" (il est géré par Astro)
+# et on donne son nom exact que vous avez trouvé.
+networks:
+  airflow_network:
+    external: true
+    name: sentiment-analysis_950bd4_airflow
